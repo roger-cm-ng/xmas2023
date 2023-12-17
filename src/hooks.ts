@@ -35,7 +35,8 @@ export const useGoogleAnalytics = () => {
   const [initialized, setInitialized] = useState(false);
 
   useEffect(() => {
-    if (!window.location.href.includes('localhost') && 'GTM-MRJWJ4KM') {
+    if (!window.location.href.includes('localhost')) {
+      console.log('gtm initialised');
       initialize('GTM-MRJWJ4KM');
       setInitialized(true);
     }

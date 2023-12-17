@@ -3,6 +3,9 @@ import { Stage } from './components/stage/stage';
 import { useWindowSize } from './hooks';
 import { isMobile } from 'react-device-detect';
 import useWindowOrientation from 'use-window-orientation';
+import { event } from 'react-ga';
+import { useGoogleAnalytics } from './hooks';
+import { useEffect } from 'react';
 
 function App () {
   const windowSize = useWindowSize();
@@ -10,6 +13,18 @@ function App () {
     viewWidth, viewHeight
   } = windowSize;
   const { landscape } = useWindowOrientation();
+  const gtmInitialised = useGoogleAnalytics();
+
+  useEffect(() => {
+    if (gtmInitialised) {
+      event({
+        category: 'Xmas2023 system new',
+        action: 'Xmas2023 Categories',
+        label: 'Xmas2023 Categories loaded'
+      });
+    }
+  // eslint-disable-next-line
+  },[]);
 
   return (
     <>

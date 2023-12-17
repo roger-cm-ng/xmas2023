@@ -2,6 +2,10 @@ import {
   useState,
   useEffect
 } from 'react';
+import {
+  initialize,
+  pageview
+} from 'react-ga';
 
 export const useWindowSize = (): ({ viewWidth: number; viewHeight: number }) => {
   const [windowSize, setWindowSize] = useState({
@@ -26,3 +30,23 @@ export const useWindowSize = (): ({ viewWidth: number; viewHeight: number }) => 
 
   return windowSize;
 };
+
+export const useGoogleAnalytics = () => {
+  const [initialized, setInitialized] = useState(false);
+
+  useEffect(() => {
+    if (!window.location.href.includes('localhost') && 'GTM-MRJWJ4KM') {
+      initialize('GTM-MRJWJ4KM');
+      setInitialized(true);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (initialized) {
+      pageview(window.location.href);
+    }
+  }, [initialized]);
+
+  return initialized;
+};
+

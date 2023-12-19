@@ -1,7 +1,7 @@
 import {
   Box, Button
 } from '@chakra-ui/react';
-import Lottie from "lottie-react";
+import Lottie from 'lottie-react';
 import { useStore } from '../../stores';
 import { StageEnum } from '../stage/stage.types';
 import introAnimation from './intro-animation.json';

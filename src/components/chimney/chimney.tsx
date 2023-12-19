@@ -3,21 +3,21 @@ import {
   PopoverTrigger, PopoverContent, PopoverArrow, PopoverBody
 } from '@chakra-ui/react';
 import {
-  useEffect, useState
+  useEffect, useState, useRef
 } from 'react';
-import {
-  AnimateCC, GetAnimationObjectParameter
-} from 'react-adobe-animate';
 import { useStore } from '../../stores';
 import { observer } from 'mobx-react';
 import { AnimationEnum } from '../stage/stage.types';
 import { getQueryParam } from '../../utils';
+import stuck from './stuck.json';
+import unstuck from './unstuck.json';
+import Lottie, { LottieRef } from 'lottie-react';
 
 export const Chimney = observer(() => {
-  const [, getAnimationObject] = useState<GetAnimationObjectParameter|null>(null);
   const [showText, setShowText] = useState(false);
   const { stageStore } = useStore();
   const fromFamily = getQueryParam('from');
+  const lottieRef:LottieRef = useRef(null);
 
   useEffect(() => {
     setTimeout(() => {
@@ -28,6 +28,11 @@ export const Chimney = observer(() => {
   const playAgainHandler = () => {
     window.location.reload();
   };
+  const repeatAnimation = () => {
+    if (stageStore.animation === AnimationEnum.STUCK) {
+      lottieRef.current?.goToAndPlay(80, true);
+    }
+  };
 
   return (
     <>
@@ -36,6 +41,7 @@ export const Chimney = observer(() => {
           position={'absolute'}
           top={'10%'}
           width={'100%'}
+          zIndex={1000}
         >
           <Box
             color={'white'}
@@ -107,9 +113,11 @@ export const Chimney = observer(() => {
           </PopoverBody>
         </PopoverContent>
       </Popover>
-      <AnimateCC
-        animationName={stageStore.animation}
-        getAnimationObject={getAnimationObject}
+      <Lottie
+        lottieRef={lottieRef}
+        animationData={stageStore.animation === AnimationEnum.STUCK ? stuck : unstuck}
+        loop={false}
+        onComplete={repeatAnimation}
       />
     </>
   );

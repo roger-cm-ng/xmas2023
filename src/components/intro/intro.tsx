@@ -1,15 +1,12 @@
 import {
   Box, Button
 } from '@chakra-ui/react';
-import { useState } from 'react';
-import {
-  AnimateCC, GetAnimationObjectParameter
-} from 'react-adobe-animate';
+import Lottie from "lottie-react";
 import { useStore } from '../../stores';
 import { StageEnum } from '../stage/stage.types';
+import introAnimation from './intro-animation.json';
 
 export const Intro = () => {
-  const [, getAnimationObject] = useState<GetAnimationObjectParameter|null>(null);
   const { stageStore } = useStore();
 
   return (
@@ -18,6 +15,7 @@ export const Intro = () => {
         position={'absolute'}
         top={'10%'}
         width={'100%'}
+        zIndex={100}
       >
         <Box
           color={'red'}
@@ -43,6 +41,7 @@ export const Intro = () => {
         width={'100%'}
         display={'flex'}
         justifyContent={'center'}
+        zIndex={110}
       >
         <Button
           onClick={() => stageStore.setCurrentStage(StageEnum.GAME)}
@@ -56,10 +55,7 @@ export const Intro = () => {
           PLAY
         </Button>
       </Box>
-      <AnimateCC
-        animationName={'intro'}
-        getAnimationObject={getAnimationObject}
-      />
+      <Lottie animationData={introAnimation} />
     </>
   );
 };
